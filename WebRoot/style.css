@@ -1,0 +1,19 @@
+body{ 
+margin-top:0px;
+font-size:12px;
+}
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+a:active {
+	text-decoration: none;
+}
+.topbg{ background:url(images/topbg.jpg) repeat-x;}
+.leftbg{ background:url(images/leftbg.jpg) repeat-x;}
+.input{ width:180px; height:30px; border:1px solid #CCCCCC;}

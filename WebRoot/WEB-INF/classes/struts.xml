@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" /> 
+    <constant name="struts.devMode" value="true" ></constant>
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    <constant name="struts.action.extension" value="htm," ></constant>
+    
+    <constant name="struts.custom.i18n.resources" value="Messages"></constant>
+	<constant name="struts.multipart.maxSize" value="1000000000" />
+	
+	<package name="super" namespace="/" extends="struts-default">
+
+  		
+   		<!-- 拦截器 开始-->
+   		<!-- 基于paramsPrepareParamsStack,增加store interceptor保证actionMessage在redirect后不会丢失 -->  
+   		<interceptors>  
+        	<interceptor-stack name="storeStack">  
+            	<interceptor-ref name="store">  
+                	<param name="operationMode">AUTOMATIC</param>  
+             	</interceptor-ref>  
+            	<interceptor-ref name="paramsPrepareParamsStack" />  
+         	</interceptor-stack>  
+     	</interceptors>   
+     	<default-interceptor-ref name="storeStack" /> 
+   		<!-- 拦截器 结束 -->
+   		
+   		
+
+		<!-- 管理员 -->
+		<action name="admin*" class="ManagersAction" method="{1}">
+		    <result name="admin">/admin/admin_${dynkey}.jsp</result>
+			<result name="login">/admin/index.jsp</result>
+			<result name="action" type="chain">admin${dynkey}</result>
+		</action>
+		
+		<!-- 会员员 -->
+		<action name="members*" class="MembersAction" method="{1}">
+			<result name="admin">/members_${dynkey}.jsp</result>
+			<result name="admins">/admin/members_${dynkey}.jsp</result>
+			<result name="index">/index.jsp</result>
+			<result name="action" type="chain">members${dynkey}</result> 
+		</action>
+		
+		<!-- 日记 -->
+		<action name="diary*" class="DiaryAction" method="{1}">
+			<result name="admin">/diary_${dynkey}.jsp</result>
+			<result name="admins">/admin/diary_${dynkey}.jsp</result>
+			<result name="action" type="chain">diary${dynkey}</result>
+		</action>
+		
+		<!-- 相册 -->
+		<action name="photos*" class="PhotosAction" method="{1}">
+			<result name="admin">/photos_${dynkey}.jsp</result>
+			<result name="admins">/admin/photos_${dynkey}.jsp</result>
+			<result name="action" type="chain">photos${dynkey}</result>
+		</action>
+		
+	    <!-- 音乐 -->
+		<action name="music*" class="MusicAction" method="{1}">
+			<result name="admin">/music_${dynkey}.jsp</result>
+			<result name="admins">/admin/music_${dynkey}.jsp</result>
+			<result name="action" type="chain">music${dynkey}</result>
+		</action>
+		
+		 <!-- 视频 -->
+		<action name="video*" class="VideoAction" method="{1}">
+			<result name="admin">/video_${dynkey}.jsp</result>
+			<result name="admins">/admin/video_${dynkey}.jsp</result>
+			<result name="action" type="chain">video${dynkey}</result>
+		</action>
+		
+		  <!--娱乐 -->
+		 <action name="yule*" class="YuleAction" method="{1}">
+			<result name="admin">/yule_${dynkey}.jsp</result>
+			<result name="admins">/admin/yule_${dynkey}.jsp</result>
+			<result name="action" type="chain">yule${dynkey}</result>
+		</action>
+		
+		  <!--招聘 -->
+		 <action name="job*" class="JobAction" method="{1}">
+			<result name="admin">/job_${dynkey}.jsp</result>
+			<result name="admins">/admin/job_${dynkey}.jsp</result>
+			<result name="action" type="chain">job${dynkey}</result>
+		</action>
+		
+		 <!--留言 -->
+		 <action name="liuyuan*" class="LiuyuanAction" method="{1}">
+			<result name="admin">/liuyuan_${dynkey}.jsp</result>
+			<result name="admins">/admin/liuyuan_${dynkey}.jsp</result>
+			<result name="action" type="chain">liuyuan${dynkey}</result>
+		</action>
+			
+		 <!--好友 -->
+		 <action name="Friends*" class="FriendsAction" method="{1}">
+			<result name="admin">/friends_${dynkey}.jsp</result>
+			<result name="action" type="chain">Friends${dynkey}</result>
+		</action>
+  </package>
+
+</struts>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="snsProject"
+  id="myeclipse.1361948204656"
+  context-root="/snsProject"
+  j2ee-spec="5.0"
+  archive="snsProject.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

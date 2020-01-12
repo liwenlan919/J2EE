@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> 
+		<property name="url" value="jdbc:mysql://localhost:3307/snsProject?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+		
+		<property name="initialSize" value="5"/>  
+		<property name="maxIdle" value="10"/>  
+		<property name="minIdle" value="5"/>  
+		<property name="maxActive" value="15"/>  
+		<property name="removeAbandoned" value="true"/>  
+		<property name="removeAbandonedTimeout" value="180"/>  
+		<property name="maxWait" value="2000"/>  
+		<property name="validationQuery">  
+		<value>SELECT 1</value>  
+		</property>  
+		<property name="testOnBorrow">  
+		<value>true</value>  
+		</property>  
+		
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="packagesToScan">
+			<list>
+				<value>com.ewellter.model</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>		<property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>		
+	</bean>
+	
+	
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>	
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="del*" propagation="REQUIRED"/>
+			<tx:method name="modify*" propagation="REQUIRED"/>
+			<tx:method name="*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="allManagerMethod" expression="execution(* xxx.xxx.*.*(..))"/>
+		<aop:advisor pointcut-ref="allManagerMethod" advice-ref="txAdvice"/>
+	</aop:config>
+	
+
+	<bean id="ManagersDAOImpl" class="com.snsProject.dao.impl.ManagersDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+     <bean id="MembersDAOImpl" class="com.snsProject.dao.impl.MembersDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>    
+	  <bean id="DiaryDAOImpl" class="com.snsProject.dao.impl.DiaryDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>    
+	
+	 <bean id="PhotosDAOImpl" class="com.snsProject.dao.impl.PhotosDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>    
+	 <bean id="MusicDAOImpl" class="com.snsProject.dao.impl.MusicDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="VideoDAOImpl" class="com.snsProject.dao.impl.VideoDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="YuleDAOImpl" class="com.snsProject.dao.impl.YuleDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="JobDAOImpl" class="com.snsProject.dao.impl.JobDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="LiuyuanDAOImpl" class="com.snsProject.dao.impl.LiuyuanDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+		<bean id="FriendsDAOImpl" class="com.snsProject.dao.impl.FriendsDAOImpl" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	
+	
+	
+	
+	<bean id="ManagersAction" class="com.snsProject.struts.action.ManagersAction" scope="prototype">
+		<property name="mDao" ref="ManagersDAOImpl" />
+	</bean>
+	
+     <bean id="MembersAction" class="com.snsProject.struts.action.MembersAction" scope="prototype">
+		<property name="mDao" ref="MembersDAOImpl" />
+	</bean>
+     <bean id="DiaryAction" class="com.snsProject.struts.action.DiaryAction" scope="prototype">
+		<property name="mDao" ref="DiaryDAOImpl" />
+	</bean>
+	 <bean id="PhotosAction" class="com.snsProject.struts.action.PhotosAction" scope="prototype">
+		<property name="mDao" ref="PhotosDAOImpl" />
+	</bean>
+	 <bean id="MusicAction" class="com.snsProject.struts.action.MusicAction" scope="prototype">
+		<property name="mDao" ref="MusicDAOImpl" />
+	</bean>
+	 <bean id="VideoAction" class="com.snsProject.struts.action.VideoAction" scope="prototype">
+		<property name="mDao" ref="VideoDAOImpl" />
+	</bean>
+	 <bean id="YuleAction" class="com.snsProject.struts.action.YuleAction" scope="prototype">
+		<property name="mDao" ref="YuleDAOImpl" />
+	</bean>
+	 <bean id="JobAction" class="com.snsProject.struts.action.JobAction" scope="prototype">
+		<property name="mDao" ref="JobDAOImpl" />
+	</bean>
+	<bean id="LiuyuanAction" class="com.snsProject.struts.action.LiuyuanAction" scope="prototype">
+		<property name="mDao" ref="LiuyuanDAOImpl" />
+	</bean>  
+	<bean id="FriendsAction" class="com.snsProject.struts.action.FriendsAction" scope="prototype">
+		<property name="mDao" ref="FriendsDAOImpl" />
+	</bean>
+</beans>
